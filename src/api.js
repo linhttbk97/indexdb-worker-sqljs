@@ -816,6 +816,7 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
     * @param {Object} opts Options to specify a filename
     */
     function Database(data, { filename = false } = {}) {
+        console.log("Database constructor called");
         if(filename === false) {
           this.filename = "dbfile_" + (0xffffffff * Math.random() >>> 0);
           this.memoryFile = true;
