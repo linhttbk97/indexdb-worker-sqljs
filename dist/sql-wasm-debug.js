@@ -415,17 +415,6 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
         return true;
     };
 
-    /** @classdesc
-    * Create a database file from a Uint8Array containing its contents
-    * @param {number[]} data An array of bytes representing
-    * an SQLite database file
-    * @param {string} filePath path to the database file
-    */
-
-    this.prototype["createFileData"] = function createFileData(data,filePath) {
-        FS.createDataFile("/", filePath, data, true, true);
-    }
-
     /** Execute the statement, fetching the the next line of result,
     that can be retrieved with {@link Statement.get}.
 
@@ -1390,6 +1379,9 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
     Module["reset_filesystem"] = () => {
       FS.root = null;
       FS.staticInit();
+    }
+    Module["createFileData"] = (data,filePath) =>{
+        FS.createDataFile("/", filePath, data, true, true);
     }
 };
 
