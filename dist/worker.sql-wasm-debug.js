@@ -1075,6 +1075,7 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
             return results;
         } catch (errCaught) {
             if (stmt) stmt["free"]();
+            console.log('error when exec sql: ' + sql + ', params: ' + JSON.stringify(params) + ', error: ' + errCaught);
             throw errCaught;
         } finally {
             stackRestore(stack);
