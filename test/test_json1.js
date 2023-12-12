@@ -1,7 +1,5 @@
 exports.test = function(sql, assert) {
-  var db = new sql.Database(undefined,(table)=>{
-    console.log('onUpdateData', table);
-  },{filename:true});
+  var db = new sql.Database();
   // tests taken from https://www.sqlite.org/json1.html#jmini
   [
     // The json() function

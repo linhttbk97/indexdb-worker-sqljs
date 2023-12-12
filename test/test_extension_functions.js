@@ -1,7 +1,5 @@
 exports.test = function(sql, assert) {
-  var db = new sql.Database( undefined,(table)=>{
-    console.log('onUpdateData', table);
-  },{filename:true});
+  var db = new sql.Database();
   var res = db.exec("CREATE TABLE test (str_data, data);");
 
   db.run("INSERT INTO test VALUES ('Hello World!', 1);");

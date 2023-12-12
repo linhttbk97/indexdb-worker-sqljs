@@ -1,7 +1,5 @@
 exports.test = function(SQL, assert){
-	var db = new SQL.Database(undefined,(table)=>{
-		console.log('onUpdateData', table);
-	  },{filename:true});
+	var db = new SQL.Database();
 	db.exec("CREATE TABLE test (data); INSERT INTO test VALUES (x'6162ff'),(x'00')"); // Insert binary data. This is invalid UTF8 on purpose
 
 	var stmt = db.prepare("INSERT INTO test VALUES (?)");
