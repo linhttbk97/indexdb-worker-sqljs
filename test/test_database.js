@@ -2,7 +2,9 @@ exports.test = function(SQL, assert, done) {
   assert.notEqual(SQL.Database, undefined, "Should export a Database object");
 
   // Create a database
-  var db = new SQL.Database();
+  var db = new SQL.Database(undefined,(table)=>{
+    console.log('onUpdateData', table);
+  },{filename:false});
   assert.equal(Object.getPrototypeOf(db), SQL.Database.prototype, "Creating a database object");
 
   // Execute some sql

@@ -305,6 +305,11 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
         "",
         ["number", "number", "number", "number"]
     );
+    var sqlite3_update_hook = cwrap(
+        "sqlite3_update_hook",
+        "number",  
+        ["number", "number", "number"]
+    );
     var sqlite3_result_int = cwrap(
         "sqlite3_result_int",
         "",
@@ -315,6 +320,7 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
         "",
         ["number", "string", "number"]
     );
+
     var registerExtensionFunctions = cwrap(
         "RegisterExtensionFunctions",
         "number",
@@ -903,10 +909,10 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
     * one stored in the byte array passed in first argument
     * @param {number[]|string} data An array of bytes representing
     * an SQLite database file or a path
+    * @param {function} onUpdateData the update function to be executed.
     * @param {Object} opts Options to specify a filename
     */
-    function Database(data, { filename = false } = {}) {
-        console.log("Database constructor called");
+    function Database(data,onUpdateData, { filename = false } = {}) {
         if(filename === false) {
           this.filename = "dbfile_" + (0xffffffff * Math.random() >>> 0);
           this.memoryFile = true;
@@ -928,6 +934,15 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
         // A list of all user function of the database
         // (created by create_function call)
         this.functions = {};
+        if(onUpdateData){
+            var updateHookFunction = function updateHookCallback(dbName, operation,db, tableName,rowID) {
+                const tableNameString = UTF8ToString(tableName);
+                onUpdateData(tableNameString)
+            }
+            var func_ptr = addFunction(updateHookFunction, "viiiij");
+            sqlite3_update_hook(this.db, func_ptr, this);
+        }
+        
     }
 
     /** Execute an SQL query, ignoring the rows it returns.
@@ -1147,6 +1162,7 @@ Module["onRuntimeInitialized"] = function onRuntimeInitialized() {
         this.statements[pStmt] = stmt;
         return stmt;
     };
+
 
     /** Iterate over multiple SQL statements in a SQL string.
      * This function returns an iterator over {@link Statement} objects.
@@ -6555,6 +6571,9 @@ var _sqlite3_close_v2 = Module["_sqlite3_close_v2"] = createExportWrapper("sqlit
 
 /** @type {function(...*):?} */
 var _sqlite3_create_function_v2 = Module["_sqlite3_create_function_v2"] = createExportWrapper("sqlite3_create_function_v2");
+
+/** @type {function(...*):?} */
+var _sqlite3_update_hook = Module["_sqlite3_update_hook"] = createExportWrapper("sqlite3_update_hook");
 
 /** @type {function(...*):?} */
 var _sqlite3_open = Module["_sqlite3_open"] = createExportWrapper("sqlite3_open");

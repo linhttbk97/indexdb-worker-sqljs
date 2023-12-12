@@ -2,7 +2,9 @@
 exports.test = function(sql, assert){
     "use strict";
     // Create a database
-    var db = new sql.Database();
+    var db = new sql.Database(undefined,(table)=>{
+      console.log('onUpdateData', table);
+    },{filename:true});
 
     // binding a large number 
     assert.strictEqual(

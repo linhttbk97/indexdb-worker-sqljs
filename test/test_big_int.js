@@ -1,6 +1,8 @@
 exports.test = function(sql, assert){
   // Create a database
-  var db = new sql.Database();
+  var db = new sql.Database(undefined,(table)=>{
+    console.log('onUpdateData', table);
+  },{filename:true});
 
   // Create table, insert data
   sqlstr = "CREATE TABLE IF NOT EXISTS Test_BigInt (someNumber BIGINT NOT NULL);" +

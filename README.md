@@ -38,6 +38,12 @@ const db = new SQL.Database();
 // NOTE: You can also use new SQL.Database(data) where
 // data is an Uint8Array representing an SQLite database file
 
+// create a database from file
+const filePath = `sql/data.sqlite`
+const db  = new SQL.Database(filePath, (tableName)=>{
+  //todo called when table changed
+}, {filename: true})
+
 
 // Execute a single SQL string that contains multiple statements
 let sqlstr = "CREATE TABLE hello (a int, b char); \

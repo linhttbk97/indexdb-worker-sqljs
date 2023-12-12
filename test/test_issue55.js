@@ -5,7 +5,9 @@ exports.test = function(SQL, assert) {
   var filebuffer = fs.readFileSync(path.join(__dirname, 'issue55.db'));
 
   //Works
-  var db = new SQL.Database(filebuffer);
+  var db = new SQL.Database(filebuffer,(table)=>{
+    console.log('onUpdateData', table);
+  },{ filename : false });
 
   var origCount = db.prepare("SELECT COUNT(*) AS count FROM networklocation").getAsObject({}).count;
 

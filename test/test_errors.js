@@ -1,14 +1,18 @@
 exports.test = function(sql, assert) {
 
   assert.throws(function(){
-    var db = new sql.Database([1,2,3]);
+    var db = new sql.Database([1,2,3],(table)=>{
+      console.log('onUpdateData', table);
+    },{filename:false});
     db.exec("SELECT * FROM sqlite_master");
   },
                 /not a database/,
                 "Querying an invalid database should throw an error");
 
   // Create a database
-  var db = new sql.Database();
+  var db = new sql.Database({onUpdateData : (table)=>{
+    console.log('onUpdateData', table);
+  }});
 
   // Execute some sql
   var res = db.exec("CREATE TABLE test (a INTEGER PRIMARY KEY, b, c, d, e);");

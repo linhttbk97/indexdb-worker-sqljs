@@ -1,6 +1,8 @@
 exports.test = function (SQL, assert) {
   // Create a database
-  var db = new SQL.Database();
+  var db = new SQL.Database(undefined,(table)=>{
+    console.log('onUpdateData', table);
+  },{filename:true});
 
   // Multiline SQL
   var sqlstr = "CREATE TABLE test (x text, y integer);\n"

@@ -1,6 +1,8 @@
 exports.test = function(sql, assert) {
 	// Create a database
-	var db = new sql.Database();
+	var db = new sql.Database(undefined,(table)=>{
+    console.log('onUpdateData', table);
+  },{filename:true} );
 	// Ultra-simple query
 	var stmt = db.prepare("VALUES (?)");
 	// Bind null to the parameter and get the result

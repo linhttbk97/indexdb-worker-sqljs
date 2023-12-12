@@ -8,8 +8,9 @@ exports.test = function(SQL, assert) {
 	var filebuffer = fs.readFileSync(path.join(__dirname, 'test.sqlite'));
 
 	//Works
-	var db = new SQL.Database(filebuffer);
-
+	var db = new SQL.Database(filebuffer,(table)=>{
+		console.log('onUpdateData', table);
+	  },{filename:false});
 	//[{"columns":["id","content"],"values":[["0","hello"],["1","world"]]}]
 	var res = db.exec("SELECT * FROM test WHERE id = 0");
 	assert.deepEqual(res,
